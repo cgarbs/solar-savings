@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 
 class Calculator extends Component {
+
+    state = {
+
+    }
+
+    generateReport = () => {
+        
+    }
+
     render() {
         return (
             <div>
@@ -22,10 +31,9 @@ export default Calculator;
 //     let solarToYear = solarYearly * (time + 1);
     
 //     let srpYearly = srpAvg * 12;
-//     let futureMonthly = srpAvg;
 //     let srpTotal = srpYearly;
+//     let futureMonthly = srpAvg;
   
-    
 //     for(let i = 1; i <= time; i++) {
 //       let increase = futureMonthly * srpIncrease - futureMonthly
 //       futureMonthly += increase
@@ -46,7 +54,7 @@ export default Calculator;
 //     console.log(`Future Monthly in ${time} years:`, solarMonthly) //.toFixed()
 //     console.log(`Total cost for solar in ${time} years:`, solarToYear)
 //     console.log(' ')
-//     console.log('Your savings in ${time} years:', savings )
+//     console.log(`Your savings in ${time} years:`, savings)
 //   }
   
 //   console.log(calculator(179, 1.04, 5, 99, 28,000))
