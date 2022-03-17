@@ -6,14 +6,10 @@ class Calculator extends Component {
 
     }
 
-    generateReport = () => {
-        
-    }
-
     render() {
         return (
             <div>
-                
+
             </div>
         );
     }
