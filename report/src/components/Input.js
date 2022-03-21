@@ -9,22 +9,29 @@ class Input extends Component {
         time: '',
         solarMonthly: '',
 
-        srpYearly1: '',
-        srpToYear1: '',
-        futureMonthly1: '',
-        srpTotal1: '',
-        solarYearly1: '',
-        solarToYear1: ''
+        futureMonthly: '',
+        srpYearly: '',
+        srpToYear: '',
+        srpTotal: '',
+        srpThirty: '',
+
+        solarYearly: '',
+        solarToYear: '',
+        solarTotal: '',
         
     }
 
 // SET FUNCTIONS
-    setSrpAvg = (e) => {
-        this.setState({ srpAvg: e.target.value });
-    };
-
     setSolarMonthly = (e) => {
         this.setState({ solarMonthly: e.target.value });
+    };
+
+    setSolarTotal = (e) => {
+        this.setState({ solarTotal: e.target.value });
+    }
+
+    setSrpAvg = (e) => {
+        this.setState({ srpAvg: e.target.value });
     };
 
     setSrpIncrease = (e) => {
@@ -36,21 +43,25 @@ class Input extends Component {
     };
 
 // DISPLAY
-    displaySrpAvg = () => {
-        return <p>Your current monthly average: {this.state.srpAvg}</p>
-    }
+    // displaySolarMonthly = () => {
+    //     return <p>Your new monthly: {this.state.solarMonthly}</p>
+    // }
 
-    displaySolarMonthly = () => {
-        return <p>Your new monthly: {this.state.solarMonthly}</p>
-    }
+    // displaySolarTotal = () => {
+    //     return <p>Your total cost for solar: {this.state.solarTotal}</p>
+    // }
 
-    displayRateIncrease = () => {
-        return <p>Utility annual rate increase: {this.state.srpIncrease}</p>
-    }
+    // displaySrpAvg = () => {
+    //     return <p>Your current monthly average: {this.state.srpAvg}</p>
+    // }
 
-    displayTime = () => {
-        return <p>Years: {this.state.time}</p>
-    }
+    // displayRateIncrease = () => {
+    //     return <p>Utility annual rate increase: {this.state.srpIncrease}</p>
+    // }
+
+    // displayTime = () => {
+    //     return <p>Years: {this.state.time}</p>
+    // }
 
 // GENERATE REPORT
     calculate = () => {
@@ -61,41 +72,63 @@ class Input extends Component {
 
         let srpYearly = srpAvg * 12;
         let srpTotal = srpYearly;
+        let srpThirty = srpYearly;
         let futureMonthly = srpAvg;
+        let futureMonthly1 = srpAvg;
 
         let solarYearly = solarMonthly * 12;
-        let solarToYear = solarYearly * (time + 1);
+        let solarToYear = solarYearly * (time);
 
-        for(let i = 1; i <= time; i++) {
-            let increase = futureMonthly * Number(srpIncrease);
-            // console.log("!!!!!!!!!!!!!!", srpIncrease, increase, futureMonthly);
+        for(let i = 1; i < time; i++) {
+            let increase = futureMonthly * srpIncrease;
             futureMonthly += increase;
-            // console.log("............", futureMonthly)
             srpTotal += futureMonthly * 12;
         }
 
-        // let savings = srpTotal - solarToYear;
-        // console.log('===================>', savings)
+        for(let i = 1; i < 30; i++) {
+            let increase = futureMonthly1 * srpIncrease;
+            futureMonthly1 += increase;
+            srpThirty += futureMonthly1 * 12;
+        }
 
-        // console.log('===>', srpYearly, srpTotal, futureMonthly, solarYearly, solarToYear)
-    
-        this.setState({ srpYearly1: srpYearly, srpTotal1: srpTotal, futureMonthly1: futureMonthly, solarToYear1: solarToYear, solarYearly1: solarYearly })
+        this.setState({ futureMonthly: futureMonthly.toFixed(2), srpYearly: srpYearly, srpTotal: srpTotal.toFixed(2), srpThirty: srpThirty.toFixed(2), solarToYear: solarToYear, solarYearly: solarYearly });
     }
 
     displayReport = () => {
-        return this.state.srpTotal1;
+        return <div>
+                    <p>Your cost to SRP in 30 years: {this.state.srpThirty}</p>
+                    {this.state.time > 1 ? 
+                        <div>
+                        <p>Your monthly average in {this.state.time} years: {this.state.futureMonthly}</p>
+                        <p>Your total cost to SRP in {this.state.time} years: {this.state.srpTotal}</p>
+                        </div> :
+                        <div>
+                        <p>Your monthly average next year: {this.state.futureMonthly}</p>
+                        <p>Your total cost to SRP this year: {this.state.srpTotal}</p>
+                        </div>}
+                    <br></br>
+                    <p>Your fixed solar payment: {this.state.solarMonthly}</p>
+                    <p>Your total cost for solar: {this.state.solarTotal}</p>
+                    {this.state.time > 1 ? 
+                        <p>Your cost for solar in {this.state.time} years: {this.state.solarToYear}</p> :
+                        <p>Your cost for solar in this year: {this.state.solarToYear}</p>}
+                    <br></br>
+                    <p>Your savings in {this.state.time} years: {this.state.srpTotal - this.state.solarToYear}</p>
+                    <p>Your savings in 30 years: {this.state.srpThirty - this.state.solarTotal}</p>
+                </div>
     }
 
 
     render() {
         return (
             <div>
+                {/* {this.displaySolarMonthly()}
+                {this.displaySolarTotal()}
                 {this.displaySrpAvg()}
-                {this.displaySolarMonthly()}
                 {this.displayRateIncrease()}
-                {this.displayTime()}
-                <h1>Your Savings: {this.displayReport()}</h1>
+                {this.displayTime()} */}
                 <input type="text" onChange={ this.setSolarMonthly } value={ this.state.solarMonthly } placeholder="Solar Monthly" />
+                <input type="text" onChange={ this.setSolarTotal } value={ this.state.solarTotal } placeholder="Solar Total" />
                 <input type="text" onChange={ this.setSrpAvg } value={ this.state.srpAvg } placeholder="Current Average" />
                 <input type="text" onChange={ this.setTime } value={ this.state.time } placeholder="Years" />
                 <select type="text" onChange={ this.setSrpIncrease } value={this.state.srpIncrease } placeholder="Rate">
@@ -105,7 +138,8 @@ class Input extends Component {
                     <option value=".03">3%</option>
                     <option value=".04">4%</option>
                 </select>
-                <input type="button" value="Submit" onClick={ this.calculate } />
+                <input type="button" value="Submit" onClick={this.calculate} />
+                <p>REPORT {this.displayReport()}</p>
             </div>
         );
     }
@@ -135,4 +169,4 @@ export default Input;
 //     }
 
 //     let savings = srpTotal - solarToYear
-// }
+// } 62,763 - 65,378.95 - 47,380.42
