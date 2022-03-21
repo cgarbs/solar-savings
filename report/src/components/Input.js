@@ -122,6 +122,9 @@ class Input extends Component {
     render() {
         return (
             <div>
+                <div className="photo">
+                    <img src='solarnation.png' alt="Company Logo"/>
+                </div>
                 {/* {this.displaySolarMonthly()}
                 {this.displaySolarTotal()}
                 {this.displaySrpAvg()}
